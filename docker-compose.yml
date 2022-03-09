@@ -1,0 +1,29 @@
+version: "3.7"
+
+networks:
+  node-red:
+
+services:
+  nodered:
+    image: mathisdory/iotunicorn:nodered
+    ports:
+      - "1880:1880"
+    volumes:
+      - ./data:/data
+      - ./public:/home/nol/node-red-static
+    links:
+      - mongodb:mongodb
+    networks:
+      - node-red
+
+  mongodb:
+    image: mongo
+    volumes:
+      - ./mongodbdata:/data/db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+    networks:
+      - node-red
